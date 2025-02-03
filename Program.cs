@@ -1,4 +1,9 @@
 
+using AdoEmpCrud.WebApi.Data;
+using AdoEmpCrud.WebApi.Data.Core;
+using AdoEmpCrud.WebApi.Helpers;
+using Scalar.AspNetCore;
+
 namespace AdoEmpCrud.WebApi;
 
 public class Program
@@ -12,6 +17,10 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        
+        builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+        DatabaseHelper.EnsureDatabase();
 
         var app = builder.Build();
 
@@ -19,6 +28,7 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.MapScalarApiReference(); 
         }
 
         app.UseHttpsRedirection();
